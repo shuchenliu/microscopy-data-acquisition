@@ -9,5 +9,6 @@ XY_DATA_FILE=$XY_DATA_NAME$EXT
 XZ_DATA_FILE=$XZ_DATA_NAME$EXT
 
 
+# Data nature: small amount of smaller size files
 # utilize curl non-blocking I/O for files smaller sizes
 curl -Z -O $SOURCE_PREFIX$XY_DATA_FILE -O $SOURCE_PREFIX$XZ_DATA_FILE
