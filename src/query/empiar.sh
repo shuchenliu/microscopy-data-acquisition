@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# We could use Aspera CLI to sync file from EMPIAR
+# but since this is relatively a smaller dataset (~1.2G)
+# downloading a tarball from EMPIAR endpoint using a
+# smaller 'hack' seems an easier way
 
 DATA_DIR_NAME='empiar'
 
@@ -13,7 +18,9 @@ EMPIAR_URI='https://www.ebi.ac.uk/empiar/EMPIAR-11759/'
 # There are two things we'd need for query the compressed zip
 # 1. the cooke, with csrf-token
 # 2. the csrf-middleware-token, parsed from <div id='root-empiar-entry />
-TOKEN=$(curl -s $EMPIAR_URI -c cookies.txt \
+COOKIE_JAR=cookies.txt
+
+TOKEN=$(curl -s $EMPIAR_URI -c $COOKIE_JAR \
   | grep -o 'csrf-token="[^"]*"' | cut -d'"' -f2)
 
 
@@ -22,7 +29,7 @@ TOKEN=$(curl -s $EMPIAR_URI -c cookies.txt \
 PARENTS=$(echo {18464846..18464846} | tr ' ' '-')
 
 # define output name
-SAVED_FILE_NAME="empiar.zip"
+SAVED_FILE_NAME="empiar.tar"
 
 curl 'https://www.ebi.ac.uk/empiar/EMPIAR-11759/get_zip/' \
   -X POST \
@@ -33,5 +40,11 @@ curl 'https://www.ebi.ac.uk/empiar/EMPIAR-11759/get_zip/' \
   --output-dir "$OUTPUT_DIR" \
   -o $SAVED_FILE_NAME \
 
-echo "Done! File saved as $SAVED_FILE_NAME"
+
+# delete cookie file
+rm $COOKIE_JAR
+
+# unzip file
+tar -xvf "$OUTPUT_DIR/$SAVED_FILE_NAME" -C "$OUTPUT_DIR/.."
+rm "$OUTPUT_DIR/$SAVED_FILE_NAME"
 
