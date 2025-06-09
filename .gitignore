@@ -8,3 +8,8 @@
 *.tif
 *.tiff
 *.zarr/
+*.dm3
+*.zip
+*.txt
+
+src/data/**
