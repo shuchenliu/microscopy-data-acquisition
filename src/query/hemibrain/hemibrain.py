@@ -1,16 +1,15 @@
 import os
 import random
-from typing import Tuple
 
 import tensorstore as ts
 import zarr
 from zarr.errors import ContainsArrayError
 
-HEMIBRAIN_DIR_NAME = ''
+HEMIBRAIN_DIR_NAME = 'hemibrain'
 
 def make_output_dir():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(script_dir, '..', 'data', HEMIBRAIN_DIR_NAME)
+    output_dir = os.path.join(script_dir, '..', '..', 'data', HEMIBRAIN_DIR_NAME)
 
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
@@ -61,7 +60,6 @@ def save_hemibrain_data():
     assert array.shape == (1000, 1000, 1000),  "Crop must be 1000 x 1000 x 1000"
 
     output_dir = make_output_dir()
-
 
     # save to zarr file
     try:
