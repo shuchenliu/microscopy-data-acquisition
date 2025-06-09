@@ -1,6 +1,14 @@
 #!/bin/bash
 
+DATA_DIR_NAME='empiar'
+
+# output dir has to be created before data query
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+OUTPUT_DIR="$SCRIPT_DIR/../data/$DATA_DIR_NAME"
+mkdir "$OUTPUT_DIR" 2> /dev/null
+
 EMPIAR_URI='https://www.ebi.ac.uk/empiar/EMPIAR-11759/'
+
 
 # There are two things we'd need for query the compressed zip
 # 1. the cooke, with csrf-token
@@ -22,8 +30,8 @@ curl 'https://www.ebi.ac.uk/empiar/EMPIAR-11759/get_zip/' \
   --data-raw "csrfmiddlewaretoken=$TOKEN&name=$SAVED_FILE_NAME&parents=$PARENTS" \
   -H 'Content-Type: application/x-www-form-urlencoded' \
   -H 'Referer: https://www.ebi.ac.uk/empiar/EMPIAR-11759/' \
-  -o $SAVED_FILE_NAME # <-- This saves the output to a file
-
+  --output-dir "$OUTPUT_DIR" \
+  -o $SAVED_FILE_NAME \
 
 echo "Done! File saved as $SAVED_FILE_NAME"
 
