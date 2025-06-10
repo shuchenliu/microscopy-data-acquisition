@@ -12,7 +12,7 @@ TASKS = [
         'empiar',
         'epfl',
         'janelia-openorganelle',
-        'ome-idr'
+        'ome-idr',
         'hemibrain',
     ]
 
