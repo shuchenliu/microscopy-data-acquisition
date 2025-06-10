@@ -9,6 +9,9 @@ from zarr.errors import ContainsArrayError
 HEMIBRAIN_DIR_NAME = 'hemibrain'
 
 def make_output_dir():
+    """
+    Provides the output directory based on current script location
+    """
     script_dir = os.path.dirname(os.path.abspath(__file__))
     output_dir = os.path.join(script_dir, '..', '..', 'data', HEMIBRAIN_DIR_NAME)
 
@@ -17,21 +20,32 @@ def make_output_dir():
 
 
 def generate_crop_start(x: int, y: int, z: int, size=1000) -> list[int]:
-    ranges = []
+    """
+    Saves an array of start index for each of the 3 dimensions. It guarantees there are enough elements for given size starting from the index
+    """
+    starts = []
 
     for n in [x, y, z]:
         assert n >= size
         start = random.randint(0, n - size)
-        ranges.append(start)
+        starts.append(start)
 
 
-    return ranges
+    return starts
 
 
 
 
 
 def save_hemibrain_data(use_random=False) -> bool:
+    """
+    Saves a 1000x1000x1000 region from the raw data to .zarr format.
+
+    Uses tensorstore because of https://dvid.io/blog/release-v1.2/
+    "To parse the data, use one of the software libraries below or you'll have to write software to parse data using the format specification linked above."
+
+    """
+
     # define tensorstore future
     dataset = ts.open({
         'driver':
@@ -48,6 +62,8 @@ def save_hemibrain_data(use_random=False) -> bool:
 
     x, y, z, _ = dataset.shape
 
+
+    # if we purely relies on random, we might end up with a very sparse array
     if use_random:
         x_start, y_start, z_start = generate_crop_start(x, y, z)
     else:
