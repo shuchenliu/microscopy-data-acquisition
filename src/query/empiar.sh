@@ -47,6 +47,6 @@ curl 'https://www.ebi.ac.uk/empiar/EMPIAR-11759/get_zip/' \
 rm $COOKIE_JAR
 
 # unzip file
-tar -xvf "$OUTPUT_DIR/$SAVED_FILE_NAME" -C "$OUTPUT_DIR/.."
+unzip "$OUTPUT_DIR/$SAVED_FILE_NAME" -d "$OUTPUT_DIR/.."
 rm "$OUTPUT_DIR/$SAVED_FILE_NAME"
 
