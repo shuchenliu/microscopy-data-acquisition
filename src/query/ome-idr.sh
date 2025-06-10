@@ -4,7 +4,7 @@ DATA_DIR_NAME='ome-idr'
 
 # output dir has to be created before data query
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OUTPUT_DIR="$SCRIPT_DIR/../data/$DATA_DIR_NAME"
+OUTPUT_DIR="$SCRIPT_DIR/../../data/$DATA_DIR_NAME"
 
 mkdir -p "$OUTPUT_DIR"
 

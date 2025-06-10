@@ -10,7 +10,7 @@ HEMIBRAIN_DIR_NAME = 'hemibrain'
 
 def make_output_dir():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(script_dir, '..', 'data', HEMIBRAIN_DIR_NAME)
+    output_dir = os.path.join(script_dir, '..', '..', 'data', HEMIBRAIN_DIR_NAME)
 
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
