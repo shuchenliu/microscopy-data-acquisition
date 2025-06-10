@@ -1,4 +1,4 @@
-# Microcopy Data Acquisition
+# Microscopy Data Acquisition
 
 ### What
 This software downloads certain microscopy dataset from various sources including [EMPIAR](https://www.ebi.ac.uk/empiar/EMPIAR-11759/), [EPFL](https://www.epfl.ch/labs/cvlab/data/data-em/), [Janelia](https://openorganelle.janelia.org/datasets/jrc_mus-nacc-2), [OpenMicroScopy](https://idr.openmicroscopy.org/webclient/img_detail/9846137/?dataset=10740), and [Hemibrain](https://tinyurl.com/hemibrain-ng)
