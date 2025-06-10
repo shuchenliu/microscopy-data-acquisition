@@ -2,7 +2,7 @@ import os
 import subprocess
 from multiprocessing import Pool, cpu_count
 from subprocess import CompletedProcess
-from display_results import display_table
+from utils.display_results import display_table
 
 
 TASKS = [
