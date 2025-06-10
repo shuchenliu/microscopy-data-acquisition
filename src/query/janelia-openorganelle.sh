@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DATA_DIR_NAME='jrc_mus-nacc-2'
+DATA_DIR_NAME='janelia-openorganelle'
 
 # output dir has to be created before data query
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
