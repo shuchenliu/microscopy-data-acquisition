@@ -9,7 +9,7 @@ Prerequisites: `git` and `docker`
 2. `$ docker-compose up --build -d` to start a docker container named `microscopy-data`
 3. `$ docker exec -it microscopy-data python orchestration.py` to start the data query process. This commands will display an interface showing related information.
 
-Datasets will be written to `./data`, as the directory is mounted to the docker container as an output volume
+Datasets will be written to `./data`, as the directory is mounted to the docker container as an output volume. A meta-data table can be viewed at the './data' directory's [README](./data/README.md).
 
 ### Misc
 1. The total downloading time could be over 10 minutes, depending on the geolocation and local bandwidth. For example, the direct download offered by `EPFL` originates from their server in Switzerland and thus may take the longest time. In comparison, the data syncing from Janelia, querying files hosted in AWS's `N.Virginia` zone, may take a fraction of time used while ~3 times larger in size.
