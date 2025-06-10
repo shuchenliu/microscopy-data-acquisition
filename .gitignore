@@ -15,5 +15,7 @@
 data/*
 !data/README.md
 
+**/test.sh
+
 # gcp key
 gcp.json
