@@ -10,7 +10,7 @@ DATA_DIR_NAME='empiar'
 # output dir has to be created before data query
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUTPUT_DIR="$SCRIPT_DIR/../data/$DATA_DIR_NAME"
-mkdir "$OUTPUT_DIR" 2> /dev/null
+mkdir -p "$OUTPUT_DIR" 2> /dev/null
 
 EMPIAR_URI='https://www.ebi.ac.uk/empiar/EMPIAR-11759/'
 

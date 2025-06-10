@@ -5,10 +5,10 @@ DATA_DIR_NAME='ome-idr'
 # output dir has to be created before data query
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUTPUT_DIR="$SCRIPT_DIR/../data/$DATA_DIR_NAME"
-mkdir "$OUTPUT_DIR" 2> /dev/null
 
+mkdir -p "$OUTPUT_DIR"
 
-# remote location config
+## remote location config
 SOURCE_PREFIX=https://ftp.ebi.ac.uk/pub/databases/IDR/idr0086-miron-micrographs/20200610-ftp/experimentD/Miron_FIB-SEM/Miron_FIB-SEM_processed/
 XY_DATA_NAME=Figure_S3B_FIB-SEM_U2OS_20x20x20nm_xy
 XZ_DATA_NAME=Figure_S3B_FIB-SEM_U2OS_20x20x20nm_xz
