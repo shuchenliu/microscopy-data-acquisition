@@ -49,7 +49,7 @@ def display_table(*, table_name, col_names, labels):
 
         def update_status(result: CompletedProcess):
             label, res, output = result
-            status[label] = f"[green]Done[/green]" if res.returncode == 0 else f"❌ Failed ({res.returncode})"
+            status[label] = f"[green]Done[/green]" if res.returncode == 0 else f"[red]Failed[/red] ({res.returncode})"
             outputs[label] = output
             time_used[label] = f"{time() - start_time:.2f}s"
             completed.value += 1
