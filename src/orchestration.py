@@ -2,15 +2,17 @@ import os
 import subprocess
 from multiprocessing import Pool, cpu_count
 from subprocess import CompletedProcess
+
+from utils.keygen import keygen
 from utils.display_results import display_table
 
 
 TASKS = [
         # 'test',
-        # 'empiar',
-        # 'epfl',
-        # 'janelia-openorganelle',
-        # 'ome-idr'
+        'empiar',
+        'epfl',
+        'janelia-openorganelle',
+        'ome-idr'
         'hemibrain',
     ]
 
@@ -37,8 +39,12 @@ def execute_script(args) -> (str, CompletedProcess | bool, str):
 
     return script, result, get_output_dir(script)
 
+
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # generate gcp cred
+    keygen(255)
+
     with Pool(cpu_count()) as pool, \
         display_table(table_name="Microscopy Data Query Results", col_names=["Task", "Status"], labels=TASKS) as update_status:
             for sc in TASKS:

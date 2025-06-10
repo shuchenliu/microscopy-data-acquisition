@@ -10,7 +10,10 @@
 *.zarr/
 *.dm3
 *.zip
-*.txt
+
+# output directory
+data/*
+!data/README.md
 
 # gcp key
 gcp.json

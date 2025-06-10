@@ -1,0 +1,11 @@
+services:
+  microscopy-data:
+    container_name: microscopy-data
+    build: .
+    command: tail -f /dev/null # to keep container running
+    volumes:
+      - ./data:/app/data # mount directory to see data output
+    environment:
+      GOOGLE_APPLICATION_CREDENTIALS: /app/gcp.json # necessary for TensorStore
+
+
