@@ -7,6 +7,21 @@ from query.hemibrain import hemibrain
 from display_results import display_table
 
 
+def get_output_dir (index: int):
+    names = [
+        'empiar',
+        'epfl',
+        'jrc_mus-nacc-2',
+        'ome-idr',
+        'hemibrain',
+    ]
+
+    data_dir = os.path.join('./data')
+
+    return os.path.join(data_dir, names[index])
+
+
+
 def get_scripts_reference():
     # scripts = [
     #     'empiar',
@@ -22,14 +37,14 @@ def get_scripts_reference():
     return [os.path.join(scripts_dir, sc + '.sh') for sc in scripts]
 
 
-def execute_script(args) -> (str, CompletedProcess):
+def execute_script(args) -> (str, CompletedProcess, str):
     index, script  = args
     random.seed(os.urandom(16))
     n = random.randint(0, 3)
 
     result = subprocess.run(f"{script} {n}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-    return f"{script}-{index}", result
+    return f"{script}-{index}", result, get_output_dir(index)
 
 def main():
     scripts = get_scripts_reference()
