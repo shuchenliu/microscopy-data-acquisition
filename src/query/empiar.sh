@@ -25,8 +25,10 @@ TOKEN=$(curl -s $EMPIAR_URI -c $COOKIE_JAR \
 
 
 # file IDs we'd need for the server to generate .zip
-#PARENTS=$(seq -s '-' 18464846 18465029 | tr ' ' '-')
-PARENTS=$(echo {18464846..18464846} | tr ' ' '-')
+## smaller test ids
+#PARENTS=$(echo {18464846..18464846} | tr ' ' '-')
+PARENTS=$(echo {18464846..18465029} | tr ' ' '-')
+
 
 # define output name
 SAVED_FILE_NAME="empiar.tar"
