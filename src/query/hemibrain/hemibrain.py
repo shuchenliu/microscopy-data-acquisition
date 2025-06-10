@@ -30,8 +30,7 @@ def generate_crop_start(x: int, y: int, z: int, size=1000) -> list[int]:
 
 
 
-def save_hemibrain_data():
-
+def save_hemibrain_data(use_random=False) -> bool:
     # define tensorstore future
     dataset = ts.open({
         'driver':
@@ -45,10 +44,14 @@ def save_hemibrain_data():
 
      }, read=True, dimension_units=["8 nm", "8 nm", "8 nm", None]).result()
 
+
     x, y, z, _ = dataset.shape
 
-    x_start, y_start, z_start = generate_crop_start(x, y, z)
-
+    if use_random:
+        x_start, y_start, z_start = generate_crop_start(x, y, z)
+    else:
+        # a decent sample block
+        x_start, y_start, z_start = 5191, 18266, 18352
 
     # there's only one channel so we leave that out
     image_stack = dataset[ts.d['channel'][0]]
@@ -64,6 +67,7 @@ def save_hemibrain_data():
     # save to zarr file
     try:
         zarr.save(f'{output_dir}/hemibrain-crop.zarr', array)
+        return True
     except ContainsArrayError:
         print("File already exists, skipping saving")
-        pass
+        return False
