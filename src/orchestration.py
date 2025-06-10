@@ -1,5 +1,4 @@
 import os
-import random
 import subprocess
 from multiprocessing import Pool, cpu_count, Manager
 from subprocess import CompletedProcess
@@ -7,54 +6,36 @@ from query.hemibrain import hemibrain
 from display_results import display_table
 
 
-def get_output_dir (index: int):
-    names = [
+SCRIPTS = [
         'empiar',
         'epfl',
-        'jrc_mus-nacc-2',
-        'ome-idr',
-        'hemibrain',
+        'janelia-openorganelle',
+        'ome-idr'
     ]
 
+def get_output_dir(script_name: str):
     data_dir = os.path.join('./data')
-
-    return os.path.join(data_dir, names[index])
-
+    return os.path.join(data_dir, script_name)
 
 
-def get_scripts_reference():
-    # scripts = [
-    #     'empiar',
-    #     'epfl',
-    #     'janelia-openorganelle',
-    #     'ome-idr'
-    # ]
-
-    scripts = ['test'] * 4
-
+def get_scripts_reference(script_name: str):
     scripts_dir = os.path.join('./query')
-
-    return [os.path.join(scripts_dir, sc + '.sh') for sc in scripts]
+    return os.path.join(scripts_dir, script_name + '.sh')
 
 
 def execute_script(args) -> (str, CompletedProcess, str):
-    index, script  = args
-    random.seed(os.urandom(16))
-    n = random.randint(0, 3)
+    script  = args
+    script_path = get_scripts_reference(script)
+    result = subprocess.run(script_path, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # result = subprocess.run(script_path, shell=True, stdout=subprocess.DEVNULL,)
 
-    result = subprocess.run(f"{script} {n}", shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-    return f"{script}-{index}", result, get_output_dir(index)
+    return script, result, get_output_dir(script)
 
 def main():
-    scripts = get_scripts_reference()
-    # status = manager.dict({f"{s}-{i}": "Running..." for i, s in enumerate(scripts)})
-    script_keys = [f"{s}-{i}" for i, s in enumerate(scripts)]
-
     with Pool(cpu_count()) as pool, \
-        display_table(table_name="Results", col_names=["Task", "Status"], labels=script_keys) as update_status:
-            for i, s in enumerate(scripts):
-                pool.apply_async(execute_script, args=((i, s),), callback=update_status)
+        display_table(table_name="Microscopy Data Query Results", col_names=["Task", "Status"], labels=SCRIPTS) as update_status:
+            for sc in SCRIPTS:
+                pool.apply_async(execute_script, args=(sc,), callback=update_status)
 
 
 
