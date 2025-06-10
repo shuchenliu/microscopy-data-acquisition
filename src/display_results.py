@@ -47,9 +47,14 @@ def display_table(*, table_name, col_names, labels):
 
         passed = [status, outputs, time_used]
 
-        def update_status(result: CompletedProcess):
+        def update_status(result: CompletedProcess | bool):
             label, res, output = result
-            status[label] = f"[green]Done[/green]" if res.returncode == 0 else f"[red]Failed[/red] ({res.returncode})"
+
+            if isinstance(res, bool):
+                status[label] = f"[green]Done[/green]" if res is True else f"[red]Failed[/red])"
+            else:
+                status[label] = f"[green]Done[/green]" if res.returncode == 0 else f"[red]Failed[/red] ({res.returncode})"
+
             outputs[label] = output
             time_used[label] = f"{time() - start_time:.2f}s"
             completed.value += 1

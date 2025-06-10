@@ -1,6 +1,7 @@
+#!/usr/bin/env python
+
 import os
 import random
-
 import tensorstore as ts
 import zarr
 from zarr.errors import ContainsArrayError
@@ -9,7 +10,7 @@ HEMIBRAIN_DIR_NAME = 'hemibrain'
 
 def make_output_dir():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    output_dir = os.path.join(script_dir, '..', '..', 'data', HEMIBRAIN_DIR_NAME)
+    output_dir = os.path.join(script_dir, '..', 'data', HEMIBRAIN_DIR_NAME)
 
     os.makedirs(output_dir, exist_ok=True)
     return output_dir
@@ -71,3 +72,7 @@ def save_hemibrain_data(use_random=False) -> bool:
     except ContainsArrayError:
         print("File already exists, skipping saving")
         return False
+
+
+if __name__ == "__main__":
+    save_hemibrain_data()
