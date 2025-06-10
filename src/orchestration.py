@@ -16,12 +16,18 @@ TASKS = [
         'hemibrain',
     ]
 
-def get_output_dir(script_name: str):
+def get_output_dir(script_name: str) -> str:
+    """
+    Returns the output directory for the given script name
+    """
     data_dir = os.path.join('../data')
     return os.path.join(data_dir, script_name)
 
 
-def get_scripts_reference(script_name: str):
+def get_scripts_reference(script_name: str) -> str:
+    """
+    Returns the path to the script given a script name
+    """
     scripts_dir = os.path.join('./query')
     ext = '.sh'
 
@@ -30,7 +36,19 @@ def get_scripts_reference(script_name: str):
     return os.path.join(scripts_dir, script_name + ext)
 
 
-def execute_script(args) -> (str, CompletedProcess | bool, str):
+def execute_script(args: str) -> (str, CompletedProcess | bool, str):
+    """
+    Execute individual query tasks, and pass payload to display renderer
+
+    :param args: Script name
+    :return:
+        script: the script name
+        completed_process: the results of completed subprocess task
+        output_dir: the output directory
+        size: size of the output dataset
+
+    """
+
     script = args
 
     script_path = get_scripts_reference(script)
@@ -49,6 +67,10 @@ def execute_script(args) -> (str, CompletedProcess | bool, str):
 
 
 def main():
+    """
+    Main driver function for the data acquisition pipeline.
+    It generates a gcp credentials for later use with TensorStore, and start each query task in parallel.
+    """
 
     # generate gcp cred
     keygen(255)
