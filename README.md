@@ -5,7 +5,7 @@ This software downloads certain microscopy dataset from various sources includin
 
 ### How
 Prerequisites: `git` and `docker`
-1. `git clone https://github.com/shuchenliu/microscopy-data-acquisition.git` to clone this repo
+1. `$ git clone https://github.com/shuchenliu/microscopy-data-acquisition.git` to clone this repo
 2. `$ docker-compose up --build -d` to start a docker container named `microscopy-data`
 3. `$ docker exec -it microscopy-data python orchestration.py` to start the data query process. This commands will display an interface showing related information.
 
