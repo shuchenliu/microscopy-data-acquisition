@@ -1,6 +1,6 @@
 import os
 import subprocess
-from multiprocessing import Pool, cpu_count
+from multiprocessing import Pool, cpu_count, dummy
 from subprocess import CompletedProcess
 
 from utils.keygen import keygen
@@ -75,7 +75,7 @@ def main():
     # generate gcp cred
     keygen(255)
 
-    with Pool(cpu_count()) as pool, \
+    with dummy.Pool(cpu_count()) as pool, \
         display_table(table_name="Microscopy Data Query Results", col_names=["Task", "Status"], labels=TASKS) as update_status:
             for sc in TASKS:
                 pool.apply_async(execute_script, args=(sc,), callback=update_status)
