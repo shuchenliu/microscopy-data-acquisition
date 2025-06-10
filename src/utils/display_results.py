@@ -8,7 +8,7 @@ from rich.table import Table
 
 SPINNER_FRAMES = ["|", "/", "-", "\\"]
 
-def render_table(table_name, col_names, labels, frame, results, outputs, time_used, ):
+def render_table(table_name, col_names, labels, frame, results, outputs, time_used, sizes ):
     table = Table(title=table_name)
     for col_name in col_names:
         table.add_column(col_name)
@@ -16,6 +16,7 @@ def render_table(table_name, col_names, labels, frame, results, outputs, time_us
     if any(v is not None for v in outputs.values()):
         table.add_column('Output', justify='center')
         table.add_column('Time used', justify='right')
+        table.add_column('Size', justify='right')
 
     for label in labels:
         result = results[label]
@@ -24,6 +25,8 @@ def render_table(table_name, col_names, labels, frame, results, outputs, time_us
         if outputs[label] is not None:
             row.append(outputs[label])
             row.append(time_used[label])
+            row.append(sizes[label])
+
         table.add_row(*row)
 
     return table
@@ -42,13 +45,14 @@ def display_table(*, table_name, col_names, labels):
         status = manager.dict({label: "Running..." for label in labels})
         outputs = manager.dict({label: None for label in labels})
         time_used = manager.dict()
+        sizes = manager.dict()
 
         start_time = time()
 
-        passed = [status, outputs, time_used]
+        passed = [status, outputs, time_used, sizes]
 
         def update_status(result: CompletedProcess | bool):
-            label, res, output = result
+            label, res, output, size = result
 
             if isinstance(res, bool):
                 status[label] = f"[green]Done[/green]" if res is True else f"[red]Failed[/red])"
@@ -57,6 +61,7 @@ def display_table(*, table_name, col_names, labels):
 
             outputs[label] = output
             time_used[label] = f"{time() - start_time:.2f}s"
+            sizes[label] = size
             completed.value += 1
 
         with Live(render_proxy(*passed), refresh_per_second=10) as live:

@@ -17,7 +17,7 @@ TASKS = [
     ]
 
 def get_output_dir(script_name: str):
-    data_dir = os.path.join('./data')
+    data_dir = os.path.join('../data')
     return os.path.join(data_dir, script_name)
 
 
@@ -35,9 +35,17 @@ def execute_script(args) -> (str, CompletedProcess | bool, str):
 
     script_path = get_scripts_reference(script)
     result = subprocess.run(script_path, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    # result = subprocess.run(script_path, shell=Tr ue, stdout=subprocess.DEVNULL,)
+    output_dir = get_output_dir(script)
 
-    return script, result, get_output_dir(script)
+    size_string = subprocess.run(
+        ["du", "-sh", output_dir],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True  # ensures result.stdout is a string, not bytes
+    )
+    size = size_string.stdout.split()[0]
+
+    return script, result, output_dir, size
 
 
 def main():
