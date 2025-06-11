@@ -42,7 +42,8 @@ def display_table(*, table_name, col_names, labels):
 
     with Manager() as manager:
         completed = manager.Value("i", 0)
-        status = manager.dict({label: "Running..." for label in labels})
+        # status = manager.dict({label: "Running..." for label in labels})
+        status = manager.dict({label: "[grey]Not started[/grey]" for label in labels})
         outputs = manager.dict({label: None for label in labels})
         time_used = manager.dict()
         sizes = manager.dict()
@@ -50,6 +51,9 @@ def display_table(*, table_name, col_names, labels):
         start_time = time()
 
         passed = [status, outputs, time_used, sizes]
+
+        def mark_start(label: str):
+            status[label] = "Running..."
 
         def update_status(result: CompletedProcess | bool):
             label, res, output, size = result
@@ -65,7 +69,7 @@ def display_table(*, table_name, col_names, labels):
             completed.value += 1
 
         with Live(render_proxy(*passed), refresh_per_second=10) as live:
-            yield update_status
+            yield mark_start, update_status
 
             # Render loop
             while completed.value < len(labels):
